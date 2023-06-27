@@ -1,7 +1,7 @@
 var fs = require("fs");
 fs.open("./a.txt", "a+", function (err, fd) {
   if (err) {
-    console.log(err);
+    return console.log(err);
   }
   console.log(fd);
   fs.writeFile(fd, "看看", function (err) {
