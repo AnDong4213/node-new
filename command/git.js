@@ -1,4 +1,4 @@
-var child_process = require("child_process");
+/* var child_process = require("child_process");
 
 const { spawn } = child_process;
 
@@ -14,3 +14,11 @@ g.stderr.on("data", function (data) {
 g.on("close", (code) => {
   console.log(`child process exited with code ${code}`);
 });
+
+console.log(9999999);
+ */
+
+const download = require('download-git-repo')
+download('direct:git@gitee.com:beiyaoyaoyao/egg-template.git','./xxx',{clone:true},(err)=>{
+  console.log(err);
+})
