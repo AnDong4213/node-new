@@ -1,5 +1,4 @@
 var child_process = require("child_process");
-const { resolve } = require("path");
 
 const { spawn } = child_process;
 
