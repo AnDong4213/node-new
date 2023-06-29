@@ -12,9 +12,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^5.2.0",
     "commander": "^11.0.0",
     "download-git-repo": "^3.0.2",
     "inquirer": "^8.2.5",
-    "minimist": "^1.2.8"
+    "minimist": "^1.2.8",
+    "ora": "^6.3.1"
   }
 }
