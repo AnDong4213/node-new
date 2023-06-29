@@ -17,7 +17,7 @@ const downloadFun = function (url, project) {
       }
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       spinner.fail(err);
     });
 };
