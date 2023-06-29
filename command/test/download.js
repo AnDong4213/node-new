@@ -1,5 +1,7 @@
-var download = require("download-git-repo");
-
-download("github:koajs/koa.git", "./koa", { clone: true }, (err) => {
-  console.log(err);
-});
+/* download("https://gitee.com/beiyaoyaoyao/express-template.git", "express")
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    console.log(err);
+  }); */
