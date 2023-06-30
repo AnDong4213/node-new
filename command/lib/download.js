@@ -5,6 +5,7 @@ const download = require("./git");
 const downloadFun = function (url, project) {
   const spinner = ora().start();
   spinner.text = "代码正在下载……";
+  spinner.color = "red";
 
   download(url, project)
     .then((res) => {
