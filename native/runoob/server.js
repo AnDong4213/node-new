@@ -1,4 +1,4 @@
-var http = require("http");
+var http = require("node:http");
 var fs = require("fs");
 var url = require("url");
 
@@ -6,8 +6,9 @@ var url = require("url");
 http
   .createServer(function (request, response) {
     // 解析请求，包括文件名
-    console.log(request.url);
-    console.log(url.parse(request.url));
+    console.log("request.url--", request.url);
+    console.log("***************", request.method);
+    console.log(url.parse(request.url, true));
     var pathname = url.parse(request.url).pathname;
 
     // 输出请求的文件名
