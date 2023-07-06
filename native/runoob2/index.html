@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>模式</title>
+  </head>
+  <body>
+    <script>
+      class Subject {
+        constructor() {
+          this.observerList = [];
+        }
+        addObserver(observer) {
+          this.observerList.push(observer);
+        }
+        removeObserver(observer) {
+          const index = this.observerList.findIndex(
+            (o) => o.name === observer.name
+          );
+          this.observerList.splice(index, 1);
+        }
+        notifyObservers(message) {
+          console.log(this.observerList);
+          const observers = this.observerList;
+          observers.forEach((observer) => observer.notified(message));
+        }
+      }
+      // 观察者：
+      class Observer {
+        constructor(name, subject) {
+          this.name = name;
+          console.log("subject", subject);
+          if (subject) {
+            console.log("subject", subject);
+            subject.addObserver(this);
+          }
+        }
+
+        notified(message) {
+          console.log(this.name, "got message", message);
+        }
+      }
+
+      // 使用代码
+      const subject = new Subject();
+      const observerA = new Observer("observerA", subject);
+      const observerB = new Observer("observerB");
+      // subject.addObserver(observerB);
+
+      subject.notifyObservers("Hello from subject");
+      // subject.removeObserver(observerA);
+      // subject.notifyObservers("Hello again");
+
+      console.log("--------------------------------");
+    </script>
+  </body>
+</html>

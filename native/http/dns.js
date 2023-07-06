@@ -7,7 +7,6 @@ dns.lookup("www.baidu.com", function onLookup(err, address, family) {
     if (err) {
       console.log(err.stack);
     }
-
     console.log("反向解析 " + address + ": " + JSON.stringify(hostnames));
   });
 });
