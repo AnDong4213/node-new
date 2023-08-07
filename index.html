@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>测试</title>
+  </head>
+  <body></body>
+
+  <script>
+    function Foo() {
+      if (!new.target) throw "Foo() must be called with new";
+      console.log("Foo instantiated with new");
+    }
+    // Foo();
+    new Foo();
+
+    // 在类的构造方法中，new.target指向直接被new执行的构造函数。并且当一个父类构造方法在子类构造方法中被调用时，情况与之相同。
+    class A {
+      constructor() {
+        console.log(new.target.name);
+      }
+    }
+
+    class B extends A {
+      constructor() {
+        super();
+      }
+    }
+    // new A();
+    new B();
+  </script>
+</html>

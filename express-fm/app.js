@@ -1,40 +1,55 @@
 const express = require("express");
 const app = express();
-var fs = require("fs");
-var { promisify, callbackify } = require("util");
-const readFile = promisify(fs.readFile);
+const db = require("./db");
+const mongo = require("./mongodb");
 
-/* app.get("/", function (req, res) {
-  fs.readFile("./db.json", "utf-8", (err, data) => {
-    if (!err) {
-      var back = JSON.parse(data);
-      res.send(back.users);
-    } else {
-      app.status(500).json({ err });
-    }
-  });
-}); */
-async function fn() {
-  return "hello world";
-}
-const callbackFunction = callbackify(fn);
+app.use(express.json()); // 'content-type': 'application/json'
+mongo.mongoDb().finally(() => mongo.client.close());
 
 app.get("/", async function (req, res) {
   try {
-    callbackFunction((err, ret) => {
-      if (err) throw err;
-      console.log(ret);
-    });
-    const data = await readFile("./db.json", "utf-8");
-    var back = JSON.parse(data);
-    res.send(back.users);
+    const data = await db.getDb();
+    res.send(data.users);
   } catch (error) {
     res.status(500).json({ error });
   }
 });
+
 app.post("/", async (req, res) => {
-  console.log("req.headers-", req.headers);
-  // console.log("req.body-", req.body);
+  try {
+    const userInfo = req.body;
+    if (!userInfo.username) {
+      res.status(403).json({
+        error: "缺少用户名"
+      });
+    }
+    const userList = await db.getDb();
+    userInfo.id = userList.users[userList.users.length - 1].id + 1;
+    userList.users.push(userInfo);
+    const r = await db.serveDb(userList);
+    if (!r) {
+      res.send({ msg: "用户添加成功" });
+    }
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+});
+
+app.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    /* res.send({
+      id
+    }); */
+    res.status(200).json({
+      msg: "修改成功",
+      id
+    });
+  } catch (error) {
+    res.status(500).json({
+      error
+    });
+  }
 });
 
 app.listen(3000, () => {
