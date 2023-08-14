@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+const { mongopath } = require("../config/config.default");
 
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/eduline1");
+  await mongoose.connect(mongopath);
 }
 
 main()
@@ -13,7 +14,7 @@ main()
     console.log("mongo链接失败");
   });
 
-const user = new mongoose.Schema({
+/* const user = new mongoose.Schema({
   username: {
     type: String,
     require: true
@@ -26,4 +27,13 @@ const user = new mongoose.Schema({
 
 const userModel = mongoose.model("User2", user);
 const u = new userModel({ username: "lisi", age: 8 });
-u.save();
+u.save(); */
+
+module.exports = {
+  User: mongoose.model("User", require("./userModel"))
+  // Video: mongoose.model("Video", require("./videoModel")),
+  // Subscribe: mongoose.model("Subscribe", require("./subscribeModel")),
+  // Videocomment: mongoose.model("Videocomment", require("./videocommentModel")),
+  // Videolike: mongoose.model("Videolike", require("./videolikeModel")),
+  // collectModel: mongoose.model("CollectModel", require("./collectModel"))
+};
