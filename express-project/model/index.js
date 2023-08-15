@@ -7,11 +7,11 @@ async function main() {
 
 main()
   .then((res) => {
-    console.log("mongo链接成功");
+    console.log("MongoDB链接成功");
   })
   .catch((err) => {
     console.log(err);
-    console.log("mongo链接失败");
+    console.log("MongoDB链接失败");
   });
 
 /* const user = new mongoose.Schema({
