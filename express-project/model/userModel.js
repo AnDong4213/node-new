@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-// const md5 = require("../util/md5");
+const md5 = require("../util/md5");
 
 const baseModel = require("./baseModel");
 
@@ -14,7 +14,9 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true
+    required: true,
+    set: value => md5(value),
+    select: false
   },
   phone: {
     type: String,
