@@ -26,10 +26,10 @@ exports.login = async (req, res) => {
 
 // 用户修改
 exports.update = async (req, res) => {
-  var id = req.user.userinfo._id;
+  var id = req.user._id;
   var dbBack = await User.findByIdAndUpdate(id, req.body, { new: true });
-  // console.log(updateData);
-  res.status(202).json({ user: dbBack });
+  // console.log(dbBack);
+  res.status(200).json({ user: dbBack });
 };
 
 // 用户列表
