@@ -26,7 +26,7 @@ module.exports.verifyToken = function (requried = true) {
 
 module.exports.createToken = async (userinfo) => {
   const token = await prosign(userinfo, uuid, {
-    expiresIn: 20
+    expiresIn: 60 * 60 * 24
   });
 
   return token;
