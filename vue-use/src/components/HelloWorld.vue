@@ -1,15 +1,33 @@
 <template>
   <div class="greetings">
     <h1 class="green">{{ msg }}</h1>
+    <p>{{ x }} - {{ y }}</p>
+    <p>{{ data }}</p>
   </div>
 </template>
 
 <script setup>
-defineProps({
+import { onMounted, nextTick } from 'vue'
+import { useMouse, useVModel } from '@vueuse/core'
+
+const props = defineProps({
   msg: {
     type: String,
     required: true
   }
+})
+
+const { x, y } = useMouse()
+
+const emit = defineEmits(['changeMsg'])
+
+const data = useVModel(props, 'msg', emit, { passive: true, deep: true })
+
+onMounted(async () => {
+  data.value = '9999'
+  await nextTick()
+  console.log(data.value)
+  console.log(props)
 })
 </script>
 
