@@ -1,5 +1,4 @@
 var RPCClient = require("@alicloud/pop-core").RPCClient;
-var { getTimer } = require("../util/date");
 
 function initVodClient(accessKeyId, accessKeySecret) {
   var regionId = "cn-shanghai"; // 点播服务接入地域
