@@ -38,9 +38,7 @@
       <div class="input-control">
         <label for="userId">阿里云账号ID</label>
         <input type="text" class="form-control" v-model="userId" disabled placeholder="输入阿里云账号ID">
-
       </div>
-
     </div>
 
     <div class="upload">

@@ -22,7 +22,7 @@ exports.getvod = async (req, res) => {
   const vodback = await client.request(
     "CreateUploadVideo",
     {
-      Title: "this is a sample",
+      Title: "宝宝专属",
       FileName: "filename.mp4"
     },
     {}

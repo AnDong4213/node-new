@@ -55,3 +55,8 @@ exports.headimg = async (req, res) => {
 exports.list = async (req, res) => {
   res.status(200).json({ id: req.url });
 };
+
+// 用户订阅
+exports.subscribe = async (req, res) => {
+  res.status(200).json({ id: req.url });
+};

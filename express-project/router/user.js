@@ -17,6 +17,7 @@ router
     verifyToken(),
     upload.single("headimg"),
     userController.headimg
-  );
+  )
+  .get("/subscribe/:userId", verifyToken(), userController.subscribe);
 
 module.exports = router;
