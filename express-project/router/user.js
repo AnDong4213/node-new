@@ -18,6 +18,8 @@ router
     upload.single("headimg"),
     userController.headimg
   )
-  .get("/subscribe/:userId", verifyToken(), userController.subscribe);
+  .get("/subscribe/:userId", verifyToken(), userController.subscribe)
+  .get("/unsubscribe/:userId", verifyToken(), userController.unsubscribe)
+  .get("/getuser/:userId", verifyToken(false), userController.getuser);
 
 module.exports = router;
