@@ -20,6 +20,8 @@ router
   )
   .get("/subscribe/:userId", verifyToken(), userController.subscribe)
   .get("/unsubscribe/:userId", verifyToken(), userController.unsubscribe)
-  .get("/getuser/:userId", verifyToken(false), userController.getuser);
+  .get("/getuser/:userId", verifyToken(false), userController.getuser)
+  .get("/getsubscribe/:userId", userController.getsubscribe)
+  .get("/getchannel", verifyToken(), userController.getchannel);
 
 module.exports = router;

@@ -14,6 +14,13 @@ router
     videoController.createvideo
   )
   .post("/videolist", verifyToken(), videoController.videolist)
-  .get("/video/:videoId", verifyToken(false), videoController.video);
+  .get("/video/:videoId", verifyToken(false), videoController.video)
+  .post("/comment/:videoId", verifyToken(), videoController.comment)
+  .post("/commentlist/:videoId", videoController.commentlist)
+  .delete(
+    "/deletecomment/:videoId/:commentId",
+    verifyToken(),
+    videoController.deletecomment
+  );
 
 module.exports = router;
