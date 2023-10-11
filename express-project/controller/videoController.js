@@ -38,6 +38,26 @@ exports.video = async (req, res) => {
     "user",
     "_id username cover"
   );
+  // videoInfo = videoInfo.toJSON();
+  videoInfo.islike = false;
+  videoInfo.isDislike = false;
+  videoInfo.isSubscribe = false;
+
+  if (req.user) {
+    const userId = req.user._id;
+    if (await Videolike.findOne({ user: userId, video: videoId, like: 1 })) {
+      videoInfo.islike = true;
+    }
+    if (await Videolike.findOne({ user: userId, video: videoId, like: -1 })) {
+      videoInfo.isDislike = true;
+    }
+    if (
+      await Subscribe.findOne({ user: userId, channel: videoInfo.user._id })
+    ) {
+      videoInfo.isSubscribe = true;
+    }
+  }
+
   res.status(200).json({ videoInfo });
 };
 
@@ -97,4 +117,110 @@ exports.deletecomment = async (req, res) => {
   videoInfo.commentCount--;
   await videoInfo.save();
   res.status(200).json({ err: "删除成功" });
+};
+
+exports.likevideo = async (req, res) => {
+  const { videoId } = req.params;
+  const userId = req.user._id;
+
+  const video = await Video.findById(videoId);
+  if (!video) {
+    return res.status(404).json({ err: "不存在" });
+  }
+  var doc = await Videolike.findOne({
+    user: userId,
+    video: videoId
+  });
+
+  let islike = true;
+
+  if (doc && doc.like === 1) {
+    await doc.deleteOne();
+    islike = false;
+  } else if (doc && doc.like === -1) {
+    doc.like = 1;
+    await doc.save();
+  } else {
+    await new Videolike({
+      user: userId,
+      video: videoId,
+      like: 1
+    }).save();
+  }
+
+  video.likeCount = await Videolike.countDocuments({
+    video: videoId,
+    like: 1
+  });
+
+  video.dislikeCount = await Videolike.countDocuments({
+    video: videoId,
+    like: -1
+  });
+  await video.save();
+
+  res.status(200).json({ ...video.toJSON(), islike });
+};
+
+exports.dislikevideo = async (req, res) => {
+  const videoId = req.params.videoId;
+  const userId = req.user._id;
+  const video = await Video.findById(videoId);
+  if (!video) {
+    return res.status(404).json({ err: "视频不存在" });
+  }
+  var doc = await Videolike.findOne({
+    user: userId,
+    video: videoId
+  });
+
+  let isdislike = true;
+
+  if (doc && doc.like === -1) {
+    await doc.remove();
+  } else if (doc && doc.like === 1) {
+    doc.like = -1;
+    await doc.save();
+    isdislike = false;
+  } else {
+    await new Videolike({
+      user: userId,
+      video: videoId,
+      like: -1
+    }).save();
+    isdislike = false;
+  }
+
+  video.likeCount = await Videolike.countDocuments({
+    video: videoId,
+    like: 1
+  });
+
+  video.dislikeCount = await Videolike.countDocuments({
+    video: videoId,
+    like: -1
+  });
+
+  await video.save();
+  res.status(200).json({
+    ...video.toJSON(),
+    isdislike
+  });
+};
+
+exports.likelist = async (req, res) => {
+  const { pageNum = 1, pageSize = 10 } = req.body;
+  var likes = await Videolike.find({
+    like: 1,
+    user: req.user._id
+  })
+    .skip((pageNum - 1) * pageSize)
+    .limit(pageSize)
+    .populate("video", "_id title vodvideoId user");
+
+  var likeCount = await Videolike.countDocuments({
+    like: 1,
+    user: req.user._id
+  });
+  res.status(200).json({ likes, likeCount });
 };

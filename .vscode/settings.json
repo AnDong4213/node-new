@@ -1,4 +1,5 @@
 {
-  // "editor.fontFamily": "Input Mono",
-  "editor.fontSize": 18
+  "editor.fontFamily": "Input Mono",
+  "editor.fontSize": 18,
+  "editor.fontWeight": "normal"
 }
