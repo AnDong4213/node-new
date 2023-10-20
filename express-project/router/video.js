@@ -14,7 +14,9 @@ router
     videoController.createvideo
   )
   .post("/videolist", verifyToken(), videoController.videolist)
+  .get("/gethots/:topnum", videoController.gethots)
   .get("/video/:videoId", verifyToken(false), videoController.video)
+  .get("/collect/:videoId", verifyToken(true), videoController.collect)
   .post("/comment/:videoId", verifyToken(), videoController.comment)
   .post("/commentlist/:videoId", videoController.commentlist)
   .delete(

@@ -5,6 +5,7 @@ const {
   Subscribe,
   collectModel
 } = require("../model");
+const { hotInc, topHots } = require("../model/redis/redishotsinc");
 
 exports.createvideo = async (req, res) => {
   var body = req.body;
@@ -57,7 +58,7 @@ exports.video = async (req, res) => {
       videoInfo.isSubscribe = true;
     }
   }
-
+  await hotInc(videoId, 1);
   res.status(200).json({ videoInfo });
 };
 
@@ -75,7 +76,7 @@ exports.comment = async (req, res) => {
     video: videoId,
     user: req.user._id
   }).save();
-
+  await hotInc(videoId, 2);
   videoInfo.commentCount++;
   await videoInfo.save();
   res.status(200).json(comment);
@@ -140,12 +141,14 @@ exports.likevideo = async (req, res) => {
   } else if (doc && doc.like === -1) {
     doc.like = 1;
     await doc.save();
+    await hotInc(videoId, 2);
   } else {
     await new Videolike({
       user: userId,
       video: videoId,
       like: 1
     }).save();
+    await hotInc(videoId, 2);
   }
 
   video.likeCount = await Videolike.countDocuments({
@@ -223,4 +226,41 @@ exports.likelist = async (req, res) => {
     user: req.user._id
   });
   res.status(200).json({ likes, likeCount });
+};
+
+// 视频收藏
+exports.collect = async (req, res) => {
+  const { videoId } = req.params;
+  const userId = req.user._id;
+
+  const video = await Video.findById(videoId);
+  if (!video) {
+    return res.status(404).json({ err: "视频不存在" });
+  }
+
+  var doc = await collectModel.findOne({
+    user: userId,
+    video: videoId
+  });
+  if (doc) {
+    return res.status(403).json({ err: "视频已经被收藏" });
+  }
+
+  const mycollect = await collectModel({
+    user: userId,
+    video: videoId
+  }).save();
+
+  if (mycollect) {
+    await hotInc(videoId, 3);
+  }
+
+  res.status(200).json({ mycollect });
+};
+
+exports.gethots = async (req, res) => {
+  const { topnum } = req.params;
+  var tops = await topHots(topnum);
+
+  res.status(200).json({ tops });
 };
