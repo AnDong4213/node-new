@@ -34,6 +34,6 @@ const getList = async () => {
 
 onMounted(() => {
   // console.log('onMounted--', process.env)
-  getList()
+  // getList()
 })
 </script>
