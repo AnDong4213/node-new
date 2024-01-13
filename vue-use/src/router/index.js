@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+// import GridLayout from '../views/grid-layout/index.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,6 +22,11 @@ const router = createRouter({
       path: '/antdv',
       name: 'antdv',
       component: () => import('../views/Antdv.vue')
+    },
+    {
+      path: '/grid',
+      name: 'grid',
+      component: () => import('../views/grid-layout/index.vue')
     }
   ]
 })
