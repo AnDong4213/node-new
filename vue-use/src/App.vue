@@ -1,7 +1,7 @@
 <template>
   <header>
     <div class="wrapper">
-      <CompOne />
+      <!-- <CompOne /> -->
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
